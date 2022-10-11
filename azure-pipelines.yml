@@ -24,4 +24,4 @@ stages:
                git checkout --track dorset/datadir-test
                git pull dorset datadir-test
                git status
-              displayName: Testing live cluster
+              displayName: Updating Datadirs on Live Servers
