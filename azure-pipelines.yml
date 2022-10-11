@@ -1,17 +1,27 @@
-jobs:
-- deployment: geoserverdatadir
-  environment: dev
-  pool:
-    name: Staging
-  strategy:                 
-    runOnce:
-      deploy: 
-        steps:       
-        - script: |
-           hostname
-           cd /mnt/data_dir
-           git checkout --track dorset/datadir-test
-           git add .
-           git commit -m "`date` datadir test"
-           git push -u dorset datadir-test
-          displayName: GeoServer Datadir Save Latest Changes
+pool:
+   name: Live Cluster
+stages:
+  - stage: pulldatadirchanges
+    displayName: Pull Datadir Changes on Live Servers
+    jobs:
+    - deployment: pulldatadir
+      displayName: Pull Datadir Changes
+      environment:
+       name: Live
+       resourceType: VirtualMachine
+      strategy:                 
+        rolling:
+          maxParallel: 1
+          deploy: 
+            steps:       
+            - script: |
+               hostname
+               cd /mnt/data_dir/
+               git add .
+               git commit -a
+               git stash
+               git fetch --all
+               git checkout --track dorset/datadir-test
+               git pull dorset datadir-test
+               git status
+              displayName: Testing live cluster
