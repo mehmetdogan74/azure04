@@ -1,4 +1,4 @@
-name: SecondPipeline
+name: SecondPipelineForGeoServerDatadir
 
 trigger: none
 
