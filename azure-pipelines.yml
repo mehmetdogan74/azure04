@@ -26,6 +26,7 @@ stages:
           deploy: 
             steps:       
             - script: |
+               date
                hostname
                cd /mnt/data_dir/
                git checkout --track dorset/main
@@ -34,7 +35,6 @@ stages:
                git stash
                git fetch --all
                docker-compose stop geoserver
-               date
                sleep 30
                git checkout --track dorset/datadir-test
                git pull dorset datadir-test
