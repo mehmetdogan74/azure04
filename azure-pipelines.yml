@@ -28,17 +28,18 @@ stages:
             - script: |
                hostname
                cd /mnt/data_dir/
+               git checkout --track dorset/main
                git add .
                git commit -a
                git stash
                git fetch --all
+               docker-compose stop geoserver
+               date
+               sleep 30
                git checkout --track dorset/datadir-test
                git pull dorset datadir-test
                git status
                cd /home/dorset/docker-geoserver
-               docker-compose stop geoserver
-               date
-               sleep 30
                docker-compose start geoserver
                sleep 60
                date
