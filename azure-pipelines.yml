@@ -40,7 +40,7 @@ stages:
                git pull dorset datadir-test
                git status
                cd /home/dorset/docker-geoserver
-               docker-compose start geoserver
+               docker-compose up -d --force-recreate geoserver
                sleep 60
                date
               displayName: Updating Datadirs on Live Servers
