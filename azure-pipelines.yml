@@ -33,8 +33,8 @@ stages:
                hostname
                pushd /mnt/data_dir/
                
-               echo "committing local changes to a 'backup' branch"
-               git checkout --track dorset "datadir-backup"
+               echo "committing local changes to a 'datadir-backup' branch"
+               git checkout --track dorset/datadir-backup
                git add .
                git commit -a
                popd
@@ -52,7 +52,7 @@ stages:
                
                echo "pulling datadir updates from Azure DevOps"
                pushd /mnt/data_dir/
-               git checkout --track dorset "datadir"
+               git checkout --track dorset/datadir
                git pull dorset "datadir"
                git status
                popd
