@@ -26,6 +26,8 @@ stages:
           deploy: 
             steps:       
             - script: |
+               #!/bin/bash
+
                date
                hostname
                cd /mnt/data_dir/
@@ -53,7 +55,7 @@ stages:
                cd /home/dorset/docker-geoserver
                docker-compose up -d --force-recreate geoserver
 
-              echo "testing geoserver"
-              curl --fail --connect-timeout '60' --max-time '120' 'localhost:8080/geoserver/styles/raster.xml' | grep StyleInfoImpl
-              date
+               echo "testing geoserver"
+               curl --fail --connect-timeout '60' --max-time '120' 'localhost:8080/geoserver/styles/raster.xml' | grep StyleInfoImpl
+               date
               displayName: Updating Datadirs on Live Servers
