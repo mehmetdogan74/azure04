@@ -27,6 +27,7 @@ stages:
             steps:       
             - script: |
                #!/bin/bash
+               set -e
 
                date
                hostname
