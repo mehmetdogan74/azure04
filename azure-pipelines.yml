@@ -64,6 +64,7 @@ stages:
                popd
 
                echo "testing geoserver"
+               sleep 60
                curl --fail --connect-timeout '60' --max-time '120' 'localhost:8080/geoserver/styles/raster.xml' | grep StyleInfoImpl
                date
               displayName: Updating Datadirs on Live Servers
