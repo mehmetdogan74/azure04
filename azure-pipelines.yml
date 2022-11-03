@@ -29,18 +29,31 @@ stages:
                date
                hostname
                cd /mnt/data_dir/
-               git checkout --track dorset/main
+               
+               echo "committing local changes to a 'backup' branch"
+               git checkout "datadir-backup"
                git add .
                git commit -a
-               git stash
+               
+               # echo "stashing any uncommitted file"
+               # git stash
                git fetch --all
+               echo "stopping geoserver"
                docker-compose stop geoserver
+               
+               echo "waiting for geoserver to stop"
                sleep 30
-               git checkout --track dorset/datadir-test
-               git pull dorset datadir-test
+               
+               echo "pulling datadir updates from Azure DevOps"
+               git checkout "datadir"
+               git pull dorset "datadir"
                git status
+               
+               echo "restarting geoserver"
                cd /home/dorset/docker-geoserver
                docker-compose up -d --force-recreate geoserver
-               sleep 60
-               date
+
+              echo "testing geoserver"
+              curl --fail --connect-timeout '60' --max-time '120' 'localhost:8080/geoserver/styles/raster.xml' | grep StyleInfoImpl
+              date
               displayName: Updating Datadirs on Live Servers
