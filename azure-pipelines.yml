@@ -30,30 +30,36 @@ stages:
 
                date
                hostname
-               cd /mnt/data_dir/
+               pushd /mnt/data_dir/
                
                echo "committing local changes to a 'backup' branch"
                git checkout "datadir-backup"
                git add .
                git commit -a
-               
+               popd
+
                # echo "stashing any uncommitted file"
                # git stash
+               pushd /home/dorset/docker-geoserver
                git fetch --all
                echo "stopping geoserver"
                docker-compose stop geoserver
-               
+               popd
+
                echo "waiting for geoserver to stop"
                sleep 30
                
                echo "pulling datadir updates from Azure DevOps"
+               pushd /mnt/data_dir/
                git checkout "datadir"
                git pull dorset "datadir"
                git status
+               popd
                
                echo "restarting geoserver"
-               cd /home/dorset/docker-geoserver
+               pushd /home/dorset/docker-geoserver
                docker-compose up -d --force-recreate geoserver
+               popd
 
                echo "testing geoserver"
                curl --fail --connect-timeout '60' --max-time '120' 'localhost:8080/geoserver/styles/raster.xml' | grep StyleInfoImpl
