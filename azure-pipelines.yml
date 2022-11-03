@@ -36,7 +36,8 @@ stages:
                echo "committing local changes to a 'datadir-backup' branch"
                git checkout datadir-backup
                git add .
-               git commit -a
+               # never fail, even if there is nothing to commit
+               git commit -a || true
                popd
 
                # echo "stashing any uncommitted file"
